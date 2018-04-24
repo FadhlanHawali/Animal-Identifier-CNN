@@ -12,21 +12,21 @@ logging.getLogger().setLevel(logging.INFO)
 
 def predict_unseen_data():
 	"""Step 0: load trained model and parameters"""
-	params = json.loads(open('./parameters.json').read())
-	checkpoint_dir = sys.argv[1]
-	if not checkpoint_dir.endswith('/'):
+	params = json.loads(open('./parameters.json').read()) #load parameter dari parameters.json
+	checkpoint_dir = sys.argv[1] #path/alamat ke checkpoint (pada arg1)
+	if not checkpoint_dir.endswith('/'): #tambah / ke alamat checkpoint
 		checkpoint_dir += '/'
-	checkpoint_file = tf.train.latest_checkpoint(checkpoint_dir + 'checkpoints')
-	logging.critical('Loaded the trained model: {}'.format(checkpoint_file))
+	checkpoint_file = tf.train.latest_checkpoint(checkpoint_dir + 'checkpoints') #train checkpoint terakhir
+	logging.critical('Loaded the trained model: {}'.format(checkpoint_file)) #log
 
 	"""Step 1: load data for prediction"""
-	test_file = sys.argv[2]
-	test_examples = json.loads(open(test_file).read())
+	test_file = sys.argv[2] #lokasi test_file (pada arg2)
+	test_examples = json.loads(open(test_file).read()) #load contoh test dari direktori test_file
 
 	# labels.json was saved during training, and it has to be loaded during prediction
-	labels = json.loads(open('./labels.json').read())
-	one_hot = np.zeros((len(labels), len(labels)), int)
-	np.fill_diagonal(one_hot, 1)
+	labels = json.loads(open('./labels.json').read()) #label yang ditentukan dalam bentuk json
+	one_hot = np.zeros((len(labels), len(labels)), int) #buat array isi nol dari panjang labels
+	np.fill_diagonal(one_hot, 1) #isi diagonal dari array one_hot dengan angka 1
 	label_dict = dict(zip(labels, one_hot))
 
 	x_raw = [example['consumer_complaint_narrative'] for example in test_examples]
