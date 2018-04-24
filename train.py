@@ -14,11 +14,11 @@ logging.getLogger().setLevel(logging.INFO)
 
 def train_cnn():
 	"""Step 0: load sentences, labels, and training parameters"""
-	train_file = sys.argv[1]
-	x_raw, y_raw, df, labels = data_helper.load_data_and_labels(train_file)
+	train_file = sys.argv[1] #lokasi train_file pada arg1
+	x_raw, y_raw, df, labels = data_helper.load_data_and_labels(train_file) #ambil params dari data_helper pada fungsi load_data_and_labels
 
-	parameter_file = sys.argv[2]
-	params = json.loads(open(parameter_file).read())
+	parameter_file = sys.argv[2] #lokasi parameter_file pada arg2
+	params = json.loads(open(parameter_file).read()) #load parameter dari parameter_file (bentuk json)
 
 	"""Step 1: pad each sentence to the same length and map each word to an id"""
 	max_document_length = max([len(x.split(' ')) for x in x_raw])
